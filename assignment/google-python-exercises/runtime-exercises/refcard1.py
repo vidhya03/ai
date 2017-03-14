@@ -3,6 +3,18 @@
 """
 # single line comments are indicated with a "#"
 import sys # loads the sys (system) library
+
+def aVidhyaFunction(a,b,c):
+    """ This is my first function """
+    print(f"hello vidhya how are you {a} {b} {c}" )
+def varArgs(**args):
+    """ This is my first function """
+    print(f"hello vidhya how are you {args}" )
+def varArg(*args):
+    """ This is my first function """
+    print(f"hello vidhya how are you {args}" )
+
+
 def main_function(parameter):
  """ This is the docstring for the function """
  print ("here is where we do stuff with the parameter")
@@ -32,6 +44,30 @@ try:
     keyValue = {1:'vidhya'}
     v = 2**4
     print (v)
+    n=4
+    m = 3
+    print (n/m)
+    print (n//m)
+
+    print ('========for Loop=========')
+
+    for a,b in [(1,2),(3,4),(5,6)] :
+        print ('The value of a ',a,' and b is ',b)
+
+    print ("==========for loop with dict==========") 
+
+    d = {'key1': 'value1', 'key2': 'value2'}
+    for key, value in d.items():
+        print("the key is ", key, ' and the value is '+ str(value))
+
+    multi = ''' this is something very special in python
+     i.e multiline support in python '''
+    print(multi)
+
+    name = 'vidhya'
+    
+    print(f'Good morning, {name}. How are you today?')
+   
 except TypeError:
     print("x isn't a list")
 except NameError:
@@ -42,3 +78,8 @@ else:
     print("no exception raised")
 finally:
     print("processing complete")
+    aVidhyaFunction(10,20,200)
+    varArgs(c=10,a=20,b=200)
+    varArg(20,29,92)
+    
+
