@@ -5,16 +5,20 @@
 import sys # loads the sys (system) library
 
 def aVidhyaFunction(a,b,c):
-    """ This is my first function """
+    
     print(f"hello vidhya how are you {a} {b} {c}" )
-def varArgs(**args):
-    """ This is my first function """
-    print(f"hello vidhya how are you {args}" )
+def varArgs(**args):    
+    print(f" varArgs(**args): {args}" )
 def varArg(*args):
     """ This is my first function """
     print(f"hello vidhya how are you {args}" )
+def bothVariable(*args, **kw):
+    print(args, kw)    
+def foo(a: int, b: float, c: 'tst' , d: 42):
+    print(a, b, c, d)
 
-
+def foo1():
+    return {"color":"yellow","color1":"yello1w"}
 def main_function(parameter):
  """ This is the docstring for the function """
  print ("here is where we do stuff with the parameter")
@@ -42,8 +46,12 @@ try:
     item = xValue
     some = (19,29,292)
     keyValue = {1:'vidhya'}
-    v = 2**4
+    v = 2**2
+    hello='how are you'
     print (v)
+    print(len(hello))
+    
+    print(test)
 except TypeError:
     print("x isn't a list")
 except NameError:
@@ -57,5 +65,11 @@ finally:
     aVidhyaFunction(10,20,200)
     varArgs(c=10,a=20,b=200)
     varArg(20,29,92)
+    lst = [1, 2, 3]
+    d = {'a':1,'b':2}
+    bothVariable (*lst,**d)
+    foo(10,3,3,9)
+    a,b=foo1()
+    print(a,b)
     
 
