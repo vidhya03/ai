@@ -32,6 +32,17 @@ try:
     keyValue = {1:'vidhya'}
     v = 2**4
     print (v)
+    y =3
+    z = 4
+    print("checking division")
+    print(y/z)
+    print(y//z)
+    print("check this index")
+    print(some[:])
+    a, *b, c, d = [1, 2, 3, 4, 5, 6, 7, 8]
+    print(b)
+    for a, b in [[1, 2], (3, 4), (5, 6)]:
+     print (a, b)
 except TypeError:
     print("x isn't a list")
 except NameError:
