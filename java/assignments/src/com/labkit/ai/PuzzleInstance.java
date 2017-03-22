@@ -147,6 +147,11 @@ public class PuzzleInstance {
        
     }
 
+    @Override
+    public String toString() {
+        return "PuzzleInstance{" + "puzzle=" + Arrays.deepToString(puzzle)+ ", direction=" + direction + '}';
+    }
+
     public String getDirection() {
         return direction;
     }
