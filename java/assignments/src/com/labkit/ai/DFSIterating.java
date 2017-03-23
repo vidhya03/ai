@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.labkit.ai;
 
 import java.util.ArrayList;
@@ -18,14 +14,13 @@ import java.util.Set;
  *  Implementation of Breadth first search algorithm 
  * @author vidhyadharan (it.vidhyadharan@gmail.com)
  */
-public class BFS {
+public class DFSIterating {
     
     
     public static void main(String[] args) {
         
-//       Integer[] initialState= new Integer[]{6,2,5,8,7,4,1,0,3}, goalState= new Integer[] {0,1,2,3,4,5,6,7,8};
-//       Integer[] initialState= new Integer[]{6,1,8,4,0,2,7,3,5}, goalState= new Integer[] {0,1,2,3,4,5,6,7,8};
-       Integer[] initialState= new Integer[]{1,2,3,0,4,5,6,7,8}, goalState= new Integer[] {0,1,2,3,4,5,6,7,8};
+//       Integer[] initialState= new Integer[]{3,1,2,0,4,5,6,7,8}, goalState= new Integer[] {0,1,2,3,4,5,6,7,8};
+       Integer[] initialState= new Integer[]{1,2,5,3,4,0,6,7,8}, goalState= new Integer[] {0,1,2,3,4,5,6,7,8};
        
        LinkedList<PuzzleInstance> frontier = new LinkedList<>();
        
@@ -49,9 +44,11 @@ public class BFS {
 //               System.out.println("Traversing");
                 explored.add(firstElement);
                List<PuzzleInstance> possibleNextMoves = firstElement.generateInstance();
+               Collections.reverse(possibleNextMoves);
+                System.out.println("possibleNextMoves = " + possibleNextMoves);
                possibleNextMoves.forEach((possibleNextMove) -> {
                    if(explored.add(possibleNextMove) && !frontier.contains(possibleNextMove)){// if it is true then the next move is valid
-                       frontier.add(possibleNextMove);
+                       frontier.addFirst(possibleNextMove);// Where is in BFS we add as queue , here as stack
                         int costOfPath = possibleNextMove.getCostOfPath();
                         if(costOfPath > maxSearchDepth){
                             System.out.println("The latest max search depth "+costOfPath);
