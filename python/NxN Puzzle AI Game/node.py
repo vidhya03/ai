@@ -3,14 +3,7 @@ class Node:
 	def __key(self):
 		string = '['.join('['.join('%s' %x for x in y) for y in self.state)
 		hashcode = string.replace("[","")
-		#print(hashcode)
 		return hashcode
-			
-	'''def __eq__(x, y):
-					return x.__key()==y.__key()
-						
-				def __hash__(self):
-					return hash(self.__key())'''
 
 	def __init__(self, state, parent, direction, depth, cost):
 		self.state = state

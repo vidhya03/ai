@@ -5,149 +5,145 @@ from copy import deepcopy
 import math
 
 def goalTest(node):
-	if(node.state == goalBoardTest):
+	if(node.state == initGoalTest):
 		return True
-
 	return False
 
-def initialize(lst):
+def initialize(input_list):
 
-	global goalBoardTest
-	global N
+	global initGoalTest
+	global BOUNDARY
 	
-	N = int(math.sqrt(len(lst)))
-	goalBoardTest = tuple(range(N*N))
+	BOUNDARY = int(math.sqrt(len(input_list)))
+	initGoalTest = tuple(range(BOUNDARY*BOUNDARY))
 	
-	return goalBoardTest
+	return initGoalTest
 
-
-#Implemented algorithm from stack
-#http://stackoverflow.com/questions/12526792/manhattan-distance-in-a
-def manhattanCostFunction(state):
+def costFunction(state):
 	cost = 0
-	manhattanDistanceSum = 0
+	distanceSum = 0
 	row = 0
 	column = 0
 
 
-	while row<N:
+	while row<BOUNDARY:
 		column = 0
-		while column < N:
-			position = row*N
+		while column < BOUNDARY:
+			position = row*BOUNDARY
 			position += column
-			value = state.index(position); # tiles array contains board elements
-			if (value != 0): # we don't compute MD for element 0
-				targetRow = (value ) / N; # expected x-coordinate (row)
-				targetColumn = (value ) % N; # expected y-coordinate (col)
-				dx = row - targetRow; # x-distance to expected coordinate
-				dy = column - targetColumn; # y-distance to expected coordinate
-				manhattanDistanceSum += math.fabs(dx) + math.fabs(dy); 
+			value = state.index(position);
+			if (value != 0):
+				targetRow = (value ) / BOUNDARY; 
+				targetColumn = (value ) % BOUNDARY; 
+				dx = row - targetRow; 
+				dy = column - targetColumn;
+				distanceSum += math.fabs(dx) + math.fabs(dy); 
 			column+=1
 		row+=1
-	cost = manhattanDistanceSum
+	cost = distanceSum
 	return cost
 
 
 def expand_nodes(node):
 
-	neighbors = []
+	children = []
 	state = node.state
 	depth = node.depth
 	i = int(state.index(0))
 
 	newState = move_up(i, state)
 	newNodeUp = create_node(newState, node, "Up", depth+1, 0)
-	neighbors.append(newNodeUp)
+	children.append(newNodeUp)
 
 	newState = move_down(i, state)
 	newNodeDown = create_node(newState, node, "Down", depth+1, 0)
-	neighbors.append(newNodeDown)
+	children.append(newNodeDown)
 
 	newState = move_left(i, state)
 	newNodeLeft = create_node(newState, node, "Left", depth+1, 0)
-	neighbors.append(newNodeLeft)
+	children.append(newNodeLeft)
 
 	newState = move_right(i, state)
 	newNodeRight = create_node(newState, node, "Right", depth+1, 0)
-	neighbors.append(newNodeRight)
+	children.append(newNodeRight)
 
-	neighbors = [node for node in neighbors if node.state != None] 
-	return neighbors
+	children = [node for node in children if node.state != None] 
+	return children
 
 def expand_nodes_reverse_ida(node):
 
-	neighbors = []
+	children = []
 	state = node.state
 	depth = node.depth
 	i = int(state.index(0))
 
 	newStateRight = move_right(i, state)
 	if(newStateRight != None):
-		newCostRight = manhattanCostFunction(newStateRight)
+		newCostRight = costFunction(newStateRight)
 		newNodeRight = create_node(newStateRight, node, "Right", depth+1, newCostRight)
-		neighbors.append(newNodeRight)
+		children.append(newNodeRight)
 
 	newStateLeft = move_left(i, state)
 	if(newStateLeft != None):
-		newCostLeft = manhattanCostFunction(newStateLeft)
+		newCostLeft = costFunction(newStateLeft)
 		newNodeLeft = create_node(newStateLeft, node, "Left", depth+1, newCostLeft)
-		neighbors.append(newNodeLeft)
+		children.append(newNodeLeft)
 
 	newStateDown = move_down(i, state)
 	if(newStateDown != None):
-		newCostDown = manhattanCostFunction(newStateDown)
+		newCostDown = costFunction(newStateDown)
 		newNodeDown = create_node(newStateDown, node, "Down", depth+1, newCostDown)
-		neighbors.append(newNodeDown)
+		children.append(newNodeDown)
 
 	newStateUp = move_up(i, state)
 	if(newStateUp != None):
-		newCostUp = manhattanCostFunction(newStateUp)
+		newCostUp = costFunction(newStateUp)
 		newNodeUp = create_node(newStateUp, node, "Up", depth+1, newCostUp)
-		neighbors.append(newNodeUp)
+		children.append(newNodeUp)
 
-	neighbors = [node for node in neighbors if node.state != None] 
-	return neighbors
+	children = [node for node in children if node.state != None] 
+	return children
 
 
 
 def expand_nodes_ast(node):
 
-	neighbors = []
+	children = []
 	state = node.state
 	depth = node.depth
 	i = int(state.index(0))
 
 	newStateUp = move_up(i, state)
 	if(newStateUp != None):
-		newCostUp = manhattanCostFunction(newStateUp)
+		newCostUp = costFunction(newStateUp)
 		newNodeUp = create_node(newStateUp, node, "Up", depth+1, newCostUp)
-		neighbors.append(newNodeUp)
+		children.append(newNodeUp)
 
 	newStateDown = move_down(i, state)
 	if(newStateDown != None):
-		newCostDown = manhattanCostFunction(newStateDown)
+		newCostDown = costFunction(newStateDown)
 		newNodeDown = create_node(newStateDown, node, "Down", depth+1, newCostDown)
-		neighbors.append(newNodeDown)
+		children.append(newNodeDown)
 
 	newStateLeft = move_left(i, state)
 	if(newStateLeft != None):
-		newCostLeft = manhattanCostFunction(newStateLeft)
+		newCostLeft = costFunction(newStateLeft)
 		newNodeLeft = create_node(newStateLeft, node, "Left", depth+1, newCostLeft)
-		neighbors.append(newNodeLeft)
+		children.append(newNodeLeft)
 
 	newStateRight = move_right(i, state)
 	if(newStateRight != None):
-		newCostRight = manhattanCostFunction(newStateRight)
+		newCostRight = costFunction(newStateRight)
 		newNodeRight = create_node(newStateRight, node, "Right", depth+1, newCostRight)
-		neighbors.append(newNodeRight)
+		children.append(newNodeRight)
 
-	neighbors = [node for node in neighbors if node.state != None] 
-	return neighbors
+	children = [node for node in children if node.state != None] 
+	return children
 
 
 def expand_nodes_reverse(node):
 
-	neighbors = []
+	children = []
 	state = node.state
 	depth = node.depth
 
@@ -155,23 +151,23 @@ def expand_nodes_reverse(node):
 
 	newStateRight = move_right(i, state)
 	newNodeRight = create_node(newStateRight, node, "Right", depth+1, 0)
-	neighbors.append(newNodeRight)
+	children.append(newNodeRight)
 
 	newStateLeft = move_left(i, state)
 	newNodeLeft = create_node(newStateLeft, node, "Left", depth+1, 0)
-	neighbors.append(newNodeLeft)
+	children.append(newNodeLeft)
 
 	newStateDown = move_down(i, state)
 	newNodeDown = create_node(newStateDown, node, "Down", depth+1, 0)
-	neighbors.append(newNodeDown)
+	children.append(newNodeDown)
 
 	newStateUp = move_up(i, state)
 	newNodeUp = create_node(newStateUp, node, "Up", depth+1, 0)
-	neighbors.append(newNodeUp)
+	children.append(newNodeUp)
 
-	neighbors = [node for node in neighbors if node.state != None] 
+	children = [node for node in children if node.state != None] 
 
-	return neighbors
+	return children
 
 
 def create_node( state, parent, direction, depth, cost ):
@@ -179,11 +175,11 @@ def create_node( state, parent, direction, depth, cost ):
 
 
 def move_up(i, state):  
-	if i-N>=0:
+	if i-BOUNDARY>=0:
 		changed_state = list(deepcopy(state))
 
-		changed_state[i]= state[i-N]
-		changed_state[i-N]=state[i]
+		changed_state[i]= state[i-BOUNDARY]
+		changed_state[i-BOUNDARY]=state[i]
 		
 		return tuple(changed_state)
 
@@ -191,11 +187,11 @@ def move_up(i, state):
 
 def move_down(i, state):  
 
-	if i+N<N*N:
+	if i+BOUNDARY<BOUNDARY*BOUNDARY:
 		changed_state = list(deepcopy(state))
 
-		changed_state[i]= state[i+N]
-		changed_state[i+N]=state[i]
+		changed_state[i]= state[i+BOUNDARY]
+		changed_state[i+BOUNDARY]=state[i]
 		
 		return tuple(changed_state)
 
@@ -203,7 +199,7 @@ def move_down(i, state):
 
 def move_left(i, state):
 	
-	if i%N != 0:
+	if i%BOUNDARY != 0:
 		changed_state = list(deepcopy(state))
 
 		changed_state[i]= state[i-1]
@@ -215,7 +211,7 @@ def move_left(i, state):
 
 def move_right(i, state):
 
-	if (i+1)%N != 0:
+	if (i+1)%BOUNDARY != 0:
 		changed_state = list(deepcopy(state))
 
 		changed_state[i]= state[i+1]

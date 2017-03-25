@@ -1,83 +1,55 @@
 import sys
 import time
 import os
-import time
+#import resource
 from time import clock
 from search_algo import search_algorithms
 
 
-start = time.time()
-
-#process = psutil.Process(os.getpid())
-#_1stmemory = process.memory_info().rss
-
-#list1 = "1,2,5,3,4,0,6,7,8"
-
-#goal = ida(list1)
-
+start_time = time.time()
 
 if(sys.argv[1]=="bfs"):
-	print("bfs")
-	#from searchAlgorithms import bfs
-	goal = search_algorithms.bfs(sys.argv[2])
+	result = search_algorithms.breadth_first_search(sys.argv[2])
 elif(sys.argv[1]=="dfs"):
-	print("dfs")
-	#from searchAlgorithms import dfs
-	goal = search_algorithms.dfs(sys.argv[2])
+	result = search_algorithms.depth_first_search(sys.argv[2])
 elif(sys.argv[1]=="ast"):
-	print("ast")
-	#from searchAlgorithms import ast
-	goal = search_algorithms.ast(sys.argv[2])
+	result = search_algorithms.a_star(sys.argv[2])
 elif(sys.argv[1]=="ida"):
-	print("ida")
-	#from searchAlgorithms import ida
-	goal = search_algorithms.ida(sys.argv[2])
+	result = search_algorithms.ida_star(sys.argv[2])
 
 
-
-
-max_fringe_size = goal[1]
-fringe_size = goal[2]
-max_search_depth = goal[3]
-nodes_expanded = goal[4]
+max_fringe_size = result[1]
+fringe_size = result[2]
+max_search_depth = result[3]
+nodes_expanded = result[4]
 
 path_to_goal = []
-node = goal[0]
+node = result[0]
 while node.parent != None:
 	path_to_goal.insert(0, node.direction)
 	node = node.parent
 
 
-end = time.time()
+end_time = time.time()
 
-running_time = end - start
+running_time = end_time - start_time
+running_time = round(running_time,8)
 
-memory = 0
+max_ram_usage = 0
 #resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1000
 
-print("path_to_goal: ", path_to_goal)
-print("cost_of_path: ", goal[0].depth)
-print("nodes_expanded: ", nodes_expanded)
-print("fringe_size: ", fringe_size)
-print("max_fringe_size: ", max_fringe_size)
-print("search_depth: ", goal[0].depth)
-print("max_search_depth: ", max_search_depth)
-print("running_time: ", running_time)
-print("max_ram_usage: ", memory)
-
-
-string = ""
-string += 'path_to_goal: '+ str(path_to_goal)+'\n'
-string += 'cost_of_path: '+ str(goal[0].depth)+'\n'
-string += 'nodes_expanded: '+ str(nodes_expanded)+'\n'
-string += 'fringe_size: '+ str(fringe_size)+'\n'
-string += 'max_fringe_size: '+ str(max_fringe_size)+'\n'
-string += 'search_depth: '+ str(goal[0].depth)+'\n'
-string += 'max_search_depth: '+str(max_search_depth)+'\n'
-string += 'running_time: '+ str(running_time)+'\n'
-string += 'max_ram_usage: '+ str(memory)
+output = ""
+output += 'path_to_goal: '+ str(path_to_goal)+'\n'
+output += 'cost_of_path: '+ str(result[0].depth)+'\n'
+output += 'nodes_expanded: '+ str(nodes_expanded)+'\n'
+output += 'fringe_size: '+ str(fringe_size)+'\n'
+output += 'max_fringe_size: '+ str(max_fringe_size)+'\n'
+output += 'search_depth: '+ str(result[0].depth)+'\n'
+output += 'max_search_depth: '+str(max_search_depth)+'\n'
+output += 'running_time: '+ str(running_time)+'\n'
+output += 'max_ram_usage: '+ str(max_ram_usage)
 
 file = open('output.txt', 'w')
-file.write(string)
+file.write(output)
 
 file.close()
