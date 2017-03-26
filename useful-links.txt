@@ -12,3 +12,7 @@ http://algo-visualizer.jasonpark.me/#path=graph_search/bfs/tree
 //todo
 https://www.quora.com/Machine-Learning/How-do-I-learn-machine-learning-1
 
+friends 
+https://github.com/dpalmasan
+https://github.com/dpalmasan/artificial_intelligence_columbia_edx
+
