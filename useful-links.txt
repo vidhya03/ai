@@ -16,3 +16,5 @@ friends
 https://github.com/dpalmasan
 https://github.com/dpalmasan/artificial_intelligence_columbia_edx
 
+// 2048
+http://puzzling.stackexchange.com/questions/48/what-is-the-largest-tile-possible-in-2048
