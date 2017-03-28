@@ -18,3 +18,6 @@ https://github.com/dpalmasan/artificial_intelligence_columbia_edx
 
 // 2048
 http://puzzling.stackexchange.com/questions/48/what-is-the-largest-tile-possible-in-2048
+
+forum discussion 
+https://courses.edx.org/courses/course-v1:ColumbiaX+CSMM.101x+1T2017/discussion/forum/af0c305c9fde4272114217885078da3b4289f091/threads/58a76cab9be41d09250008b3
