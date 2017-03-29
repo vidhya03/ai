@@ -1,153 +1,138 @@
-from random import randint
-from BaseAI import BaseAI
 import time
+from BaseAI import BaseAI
 
-# TODO: Tune weights for obtaining a better performance
-# TODO: Try more heuristics
-# TODO: Try an optimization scheme for weights
-# TODO: Try other ordering schemes
 
-# Time limit for moves
-#changed time limit
-timeLimit = 0.1
-allowance = 0.05
+MAX_TIME = 0.1
+EXTRA_GRACE_TIME = 0.05
 debug = {}
 
-class State:
-    def __init__(self, grid, move=None, depth=0):
-        self.grid = grid
-        self.move = move
-        self.depth = depth
 
-    def children(self, isMax=True):
-        """
-        Returns a list of the states, that are childs of the current state
-        """
-        children = []
+class Position:
+    def __init__(self, positionGrid, move=None, theDepth=0):
+        self.positionGrid = positionGrid
+        self.positionMove = move
+        self.positionDepth = theDepth
 
-        if isMax:
-            moves = self.grid.getAvailableMoves()
-            for move in moves:
-                newGrid = self.grid.clone()
-                newGrid.move(move)
-                children.append(State(newGrid, move, self.depth + 1))
-            children.sort(key=evalFun, reverse=True)
+    def getAllNeighbours(self, isMaximum=True):
+        neighbours = []
+
+        if isMaximum:
+            availableMoves = self.positionGrid.getAvailableMoves()
+            for perMove in availableMoves:
+                new_grid = self.positionGrid.clone()
+                new_grid.move(perMove)
+                neighbours.append(Position(new_grid, perMove, self.positionDepth + 1))
+            neighbours.sort(key=evalFun, reverse=True)
         else:
-            availableCells = self.grid.getAvailableCells()
+            availableCells = self.positionGrid.getAvailableCells()
             if len(availableCells) > 0:
-                for cell in self.grid.getAvailableCells():
-                    newGrid = self.grid.clone()
-                    newGrid.setCellValue(cell, 2)
-                    children.append(State(newGrid, self.move, self.depth + 1))
-                    newGrid = self.grid.clone()
-                    newGrid.setCellValue(cell, 4)
-                    children.append(State(newGrid, self.move, self.depth + 1))
-                
-            children.sort(key=evalFun)
-        return children
+                for perCell in self.positionGrid.getAvailableCells():
+                    new_grid = self.positionGrid.clone()
+                    new_grid.setCellValue(perCell, 2)
+                    neighbours.append(Position(new_grid, self.positionMove, self.positionDepth + 1))
+                    new_grid = self.positionGrid.clone()
+                    new_grid.setCellValue(perCell, 4)
+                    neighbours.append(Position(new_grid, self.positionMove, self.positionDepth + 1))
+
+            neighbours.sort(key=evalFun)
+        return neighbours
 
     def __eq__(self, other):
         """
         """
-        for row in xrange( self.grid.size ):
-            if self.grid.map[row] != other.grid.map[row]:
+        for eachRow in xrange(self.positionGrid.size):
+            if self.positionGrid.map[eachRow] != other.grid.map[eachRow]:
                 return False
         return True
 
     def __hash__(self):
-        return hash(str(self.grid.map))
+        return hash(str(self.positionGrid.map))
 
 
-def evalFun(state):
-    """
-    Use heuristics to give a value to the state. Returns that value
-    """
+def evalFun(position):
+    maxTile = position.positionGrid.getMaxTile()
+    totalAvailableCells = len(position.positionGrid.getAvailableCells())
 
-    # TODO: Improve heuristic to pass grader tests
-    maxTile = state.grid.getMaxTile()
-    availableCells = len(state.grid.getAvailableCells())
 
-    # Path Search Heuristic
-    r = 0.5
-    score1 = state.grid.map[3][0] + state.grid.map[3][1]*r
-    score1 += state.grid.map[3][2]*r**2 + state.grid.map[3][3]*r**3
-    score1 += state.grid.map[2][3]*r**4 + state.grid.map[2][2]*r**5 + state.grid.map[2][1]*r**6
-    score1 += state.grid.map[2][0]*r**7 + state.grid.map[1][0]*r**8 + state.grid.map[1][1]*r**9
-    score1 += state.grid.map[1][2]*r**10 + state.grid.map[1][3]*r**11 + state.grid.map[0][3]*r**12
-    score1 += state.grid.map[0][2]*r**13 + state.grid.map[0][1]*r**14 + state.grid.map[0][0]*r**15
-    
-    score2 = state.grid.map[3][0] + state.grid.map[2][0]*r
-    score2 += state.grid.map[1][0]*r**2 + state.grid.map[0][0]*r**3
-    score2 += state.grid.map[0][1]*r**4 + state.grid.map[1][1]*r**5 + state.grid.map[2][1]*r**6
-    score2 += state.grid.map[3][1]*r**7 + state.grid.map[3][2]*r**8 + state.grid.map[2][2]*r**9
-    score2 += state.grid.map[1][2]*r**10 + state.grid.map[0][2]*r**11 + state.grid.map[0][3]*r**12
-    score2 += state.grid.map[1][3]*r**13 + state.grid.map[2][3]*r**14 + state.grid.map[3][3]*r**15
-    return maxTile + 10*max(score1, score2) + 3*availableCells
+    r = 0.25
+    calculation1 = position.positionGrid.map[3][0] + position.positionGrid.map[3][1] * r
+    calculation1 += position.positionGrid.map[3][2] * r ** 2 + position.positionGrid.map[3][3] * r ** 3
+    calculation1 += position.positionGrid.map[2][3] * r ** 4 + position.positionGrid.map[2][2] * r ** 5 + position.positionGrid.map[2][1] * r ** 6
+    calculation1 += position.positionGrid.map[2][0] * r ** 7 + position.positionGrid.map[1][0] * r ** 8 + position.positionGrid.map[1][1] * r ** 9
+    calculation1 += position.positionGrid.map[1][2] * r ** 10 + position.positionGrid.map[1][3] * r ** 11 + position.positionGrid.map[0][3] * r ** 12
+    calculation1 += position.positionGrid.map[0][2] * r ** 13 + position.positionGrid.map[0][1] * r ** 14 + position.positionGrid.map[0][0] * r ** 15
 
-class InterruptExecution (Exception):
-    """
-    This is used to imprement IDS with time constraint, just for passing the grader.
-    """
+    calculation2 = position.positionGrid.map[3][0] + position.positionGrid.map[2][0] * r
+    calculation2 += position.positionGrid.map[1][0] * r ** 2 + position.positionGrid.map[0][0] * r ** 3
+    calculation2 += position.positionGrid.map[0][1] * r ** 4 + position.positionGrid.map[1][1] * r ** 5 + position.positionGrid.map[2][1] * r ** 6
+    calculation2 += position.positionGrid.map[3][1] * r ** 7 + position.positionGrid.map[3][2] * r ** 8 + position.positionGrid.map[2][2] * r ** 9
+    calculation2 += position.positionGrid.map[1][2] * r ** 10 + position.positionGrid.map[0][2] * r ** 11 + position.positionGrid.map[0][3] * r ** 12
+    calculation2 += position.positionGrid.map[1][3] * r ** 13 + position.positionGrid.map[2][3] * r ** 14 + position.positionGrid.map[3][3] * r ** 15
+    return maxTile + 10 * max(calculation1, calculation2) + 3 * totalAvailableCells
 
+
+class EndRunTimeException(Exception):
     pass
 
-def minimize(state, alpha, beta, maxDepth):
-    """
-    Minimize function, using alpha beta prunning, implemented as lecture slides.
-    Finds the child state with the lowest utility value
-    """
-    global start_time
-    deltaT = time.clock() - start_time
 
-# commenting for debug
-    if deltaT >= timeLimit:
-        raise (InterruptExecution('Stop the damn thing'))
+def minimize(position, alpha, beta, maxDepth):
+    global initial_time
+    runningTime = time.clock() - initial_time
 
-    children = state.children(False)
-    terminalTest = len(children) == 0
-    if state.depth > maxDepth or deltaT > timeLimit + allowance or terminalTest:
-        return (None, evalFun(state))
+    # commenting for debug
+    if runningTime >= MAX_TIME:
+        raise (EndRunTimeException('Ending the process'))
+
+    allPossibleNeighbours = position.getAllNeighbours(False)
+    process_Test = False
+    if len(allPossibleNeighbours) == 0:
+        process_Test = True
+    else:
+        process_Test = False
+    if position.positionDepth > maxDepth or runningTime > MAX_TIME + EXTRA_GRACE_TIME or process_Test:
+        return (None, evalFun(position))
 
     (minChild, minUtility) = (None, float('Inf'))
 
-    for child in children:
-        (_, utility) = maximize(child, alpha, beta, maxDepth)
-        
+    for neighbour in allPossibleNeighbours:
+        (_, utility) = maximize(neighbour, alpha, beta, maxDepth)
+
         if utility < minUtility:
-            (minChild, minUtility) = (child, utility)
+            (minChild, minUtility) = (neighbour, utility)
 
         if minUtility <= alpha:
             break
-    
+
         if minUtility < beta:
             beta = minUtility
 
     return (minChild, minUtility)
 
-def maximize(state, alpha, beta, maxDepth):
-    """
-    Maximize function, using alpha beta prunning, implemented as lecture slides.
-    Finds the child state with the highest utility value
-    """
-    global start_time, deltaT
-    deltaT = time.clock() - start_time
 
-# commenting for project debug
-    if deltaT >= timeLimit:
-        raise (InterruptExecution('Stop the damn thing'))
+def maximize(position, alpha, beta, maxDepth):
+    global initial_time, runningTime
+    runningTime = time.clock() - initial_time
 
-    children = state.children()
-    terminalTest = len(children) == 0
-    if state.depth > maxDepth or terminalTest:
-        return (None, evalFun(state))
+    # commenting for project debug
+    if runningTime >= MAX_TIME:
+        raise (EndRunTimeException('Ending the process'))
+
+    allPossibleNeighbours = position.getAllNeighbours()
+    process_Test = False
+    if len(allPossibleNeighbours) == 0:
+        process_Test = True
+    else:
+        process_Test = False
+    if position.positionDepth > maxDepth or process_Test:
+        return (None, evalFun(position))
 
     (maxChild, maxUtility) = (None, float('-Inf'))
-    
-    for child in children:
-        (_, utility) = minimize(child, alpha, beta, maxDepth)
+
+    for neighbour in allPossibleNeighbours:
+        (_, utility) = minimize(neighbour, alpha, beta, maxDepth)
 
         if utility > maxUtility:
-            (maxChild, maxUtility) = (child, utility)
+            (maxChild, maxUtility) = (neighbour, utility)
 
         if maxUtility >= beta:
             break
@@ -157,53 +142,49 @@ def maximize(state, alpha, beta, maxDepth):
 
     return (maxChild, maxUtility)
 
-def decision(state, maxDepth):
+
+def utilityFunctionBrain(position, maxDepth):
     """
     Finds and returns de state with the highest utility value
     """
-    global start_time
-      
-    (child, _) = maximize(state, float('-Inf'), float('Inf'), maxDepth)
+    global initial_time
+
+    (child, _) = maximize(position, float('-Inf'), float('Inf'), maxDepth)
 
     return child
-
 
 
 class PlayerAI(BaseAI):
     def getMove(self, grid):
         """
-        Uses minimax with alpha-beta prunning, modified to IDS for time constraints.
-        Returns the last deeper answer.
+        Returns the last deeper answer. and uses minmax and alpha beta pruning
         """
-        global start_time, deltaT
-        start_time = time.clock()
-        #moves = grid.getAvailableMoves()
-        #return moves[randint(0, len(moves) - 1)] if moves else None
+        global initial_time, runningTime
+        initial_time = time.clock()
+        # moves = grid.getAvailableMoves()
+        # return moves[randint(0, len(moves) - 1)] if moves else None
 
         depth = 1
-        initial = State(grid)
-        lastAnswer = decision(initial, depth)
+        initialPosition = Position(grid)
+        finalPosition = utilityFunctionBrain(initialPosition, depth)
         while True:
             depth += 1
-            #initial = State(grid)
             try:
-                child = decision(initial, depth)
-            except InterruptExecution:
+                updatePosition = utilityFunctionBrain(initialPosition, depth)
+            except EndRunTimeException:
                 break
-            
-            lastAnswer = child
-            
-            
 
-        return lastAnswer.move
+            finalPosition = updatePosition
 
-# Test client, for testing with different configurations of the grid
+        return finalPosition.positionMove
+
+
+# Test client, for testing the grid
 if __name__ == '__main__':
     from Grid import Grid
+
     grid = Grid()
-    grid.map = [[4, 16, 8, 2], [8, 32, 512, 2], [256, 64, 32, 8], [2, 4, 16, 2]]
+    grid.map = [[2, 8, 4, 2], [8, 16, 512, 512], [256, 64, 16, 8], [2, 16, 8, 2]]
 
     playerAI = PlayerAI()
     print playerAI.getMove(grid)
-
-    

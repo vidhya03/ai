@@ -6,7 +6,7 @@ from time import clock
 from search_algo import search_algorithms
 
 
-start_time = time.time()
+initial_time = time.time()
 
 if(sys.argv[1]=="bfs"):
 	result = search_algorithms.breadth_first_search(sys.argv[2])
@@ -32,7 +32,7 @@ while node.parent != None:
 
 end_time = time.time()
 
-running_time = end_time - start_time
+running_time = end_time - initial_time
 running_time = round(running_time,8)
 
 max_ram_usage = 0
