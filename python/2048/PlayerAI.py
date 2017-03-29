@@ -144,9 +144,7 @@ def maximize(position, alpha, beta, maxDepth):
 
 
 def utilityFunctionBrain(position, maxDepth):
-    """
-    Finds and returns de state with the highest utility value
-    """
+
     global initial_time
 
     (child, _) = maximize(position, float('-Inf'), float('Inf'), maxDepth)
@@ -156,13 +154,9 @@ def utilityFunctionBrain(position, maxDepth):
 
 class PlayerAI(BaseAI):
     def getMove(self, grid):
-        """
-        Returns the last deeper answer. and uses minmax and alpha beta pruning
-        """
+
         global initial_time, runningTime
         initial_time = time.clock()
-        # moves = grid.getAvailableMoves()
-        # return moves[randint(0, len(moves) - 1)] if moves else None
 
         depth = 1
         initialPosition = Position(grid)
