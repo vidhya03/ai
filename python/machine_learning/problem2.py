@@ -1,108 +1,89 @@
+import matplotlib.pyplot as PYPlot
+import numpy as NUM_PY
+import sys
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib import cm
-import matplotlib.pyplot as plt
-import numpy as np
-import sys
-
-def load_data(input_file):
-    """
-    Loads the dataset. It assumes a *.csv file without header, and the output variable
-    in the last column 
-    """
-    dataset = np.genfromtxt(input_file, delimiter=',', skip_header=0, names=None)
-
-    X = dataset[:, :-1]
-    y = dataset[:, [-1]]
-    return (X, y)
 
 
-def preprocess_data(X):
-    """
-    Creates a copy of training samples, preprocess it (centering and scaling) and
-    inserts a columns of ones (intercept)
-    """
-    Xtmp = np.copy(X)
-    mu = np.mean(Xtmp, axis=0)
-    stdev = np.std(Xtmp, axis=0)
-    Xtmp = (Xtmp     - mu) / stdev
-    Xnew = np.ones((Xtmp.shape[0],Xtmp.shape[1] + 1))
-    Xnew[:, 1:X.shape[1] + 1] = Xtmp
-    return Xnew
+def load_sample_data(input_file_for_processing):
+    loadedDataSet = NUM_PY.genfromtxt(input_file_for_processing, delimiter=',', skip_header=0, names=None)
+    X_axis = loadedDataSet[:, :-1]
+    Y_axis = loadedDataSet[:, [-1]]
+    return (X_axis, Y_axis)
 
 
-def RiskFunction(X, y, beta):
-    """
-    Vectorize form of the Risk Function a.k.a Cost Function.
-    Returns the sum of squared errors, given beta (linear hypothesis), X, y.
-    """
-    return np.linalg.norm(np.dot(X, beta) - y)**2
+def pre_process_data_samples(X_data_samples):
 
-def GradientDescent(X, y, alpha, verbose=False, iterations=100):
-    """
-    Implements gradient descent for finding a solution for linear regression
-    X: Training Set inputs
-    y: Training Set output
-    alpha: Learning Rate
-    verbose: If True, shows iterations and risk function
-    iterations: Number of iterations allowed for the process
-    """
+    XTempData = NUM_PY.copy(X_data_samples)
 
-    # TODO: Implement a way of selecting optimal learning rate and convergence criteria.
-    n = X.shape[0]
-    beta = np.zeros((X.shape[1], 1))
+    mutual = NUM_PY.mean(XTempData, axis=0)
+    StdEnv = NUM_PY.std(XTempData, axis=0)
 
-    prevRisk = float('Inf')
-    for i in xrange(iterations):
-        beta = beta - alpha/float(n)*np.dot(np.transpose(X), np.dot(X, beta) - y)
+    XTempData = (XTempData - mutual) / StdEnv
 
-        risk = RiskFunction(X, y, beta)
-        if verbose:
-            print "Iteration number: %d, Risk Function: %.6f" % (i + 1, risk)
+    XCalculatedNewValue = NUM_PY.ones((XTempData.shape[0], XTempData.shape[1] + 1))
+
+    XCalculatedNewValue[:, 1:X_data_samples.shape[1] + 1] = XTempData
+
+    return XCalculatedNewValue
 
 
-    return (beta, i + 1)
+def calculationOfRisk(X_Data, y_label, beta_value):
+    return NUM_PY.linalg.norm(NUM_PY.dot(X_Data, beta_value) - y_label) ** 2
+
+def AlgorithumGradientDescent(X_Data, Y_label, alpha_value, verbose_track=False, iterations_maximum=100):
+
+    totalNumber = X_Data.shape[0]
+    beta_value = NUM_PY.zeros((X_Data.shape[1], 1))
+
+    for index in xrange(iterations_maximum):
+        beta_value = beta_value - alpha_value / float(totalNumber) * NUM_PY.dot(NUM_PY.transpose(X_Data), NUM_PY.dot(X_Data, beta_value) - Y_label)
+
+        risk = calculationOfRisk(X_Data, Y_label, beta_value)
+        if verbose_track:
+            print "Looping total num: %d, with the risk : %.6f" % (index + 1, risk)
+
+
+    return (beta_value, index + 1)
 
 if __name__ == '__main__':
     if len(sys.argv) != 3:
-        print 'Usage: python <input.csv> <output.csv>'
+        print 'Usage: python <input.csv> <output.csv> or pythong input2.csv output2.csv '
         sys.exit(0)
-    X, y = load_data(sys.argv[1])
-    Xp = preprocess_data(X)
+    X_value, y_lable = load_sample_data(sys.argv[1])
+    XData_Sample = pre_process_data_samples(X_value)
 
-    # Creates an empty file
+
     open(sys.argv[2], 'w').close()
 
-    for alpha in [0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1, 5, 10]:
-        with open(sys.argv[2], "a") as text_file:
-            beta, iterations = GradientDescent(Xp, y, alpha)
-            text_file.write(str(alpha) + "," + str(iterations) + ",")
-            text_file.write(','.join(['%.5f' % num for num in beta]))
-            text_file.write('\n')
+    for alphaIndex in [0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1, 5, 10]:
+        with open(sys.argv[2], "a") as readFromText_file:
+            betaData, iterationsOnloop = AlgorithumGradientDescent(XData_Sample, y_lable, alphaIndex)
+            readFromText_file.write(str(alphaIndex) + "," + str(iterationsOnloop) + ",")
 
-    # My chosen alpha (I used many iterations just for passing the grader.
-    alpha = 0.08    
-    with open(sys.argv[2], "a") as text_file:
-        beta, iterations = GradientDescent(Xp, y, alpha, False, 1000)
-        text_file.write(str(alpha) + "," + str(iterations) + ",")
-        text_file.write(','.join(['%.5f' % num for num in beta]))
-        text_file.write('\n')
+            readFromText_file.write(','.join(['%.5f' % num for num in betaData]))
 
-    # Just for visualizing the hyper plane that we fitted
-    fig = plt.figure()
-    ax = Axes3D(fig)
+            readFromText_file.write('\n')
 
-    # We create the data in the original scale
-    x1, x2 = np.meshgrid(X[:, 0], X[:, 1])
-    ax.scatter(X[:, 0], X[:, 1], y)
+    alphaIndex = 0.08
+    with open(sys.argv[2], "a") as readFromText_file:
+        betaData, iterationsOnloop = AlgorithumGradientDescent(XData_Sample, y_lable, alphaIndex, False, 1000)
+        readFromText_file.write(str(alphaIndex) + "," + str(iterationsOnloop) + ",")
+        readFromText_file.write(','.join(['%.5f' % num for num in betaData]))
+        readFromText_file.write('\n')
 
-    # These are used for computing the output variable using the data scaled
-    x1p, x2p = np.meshgrid(Xp[:, 1], Xp[:, 2])
+    figureOnPyplot = PYPlot.figure()
+    axes3Dmagic = Axes3D(figureOnPyplot)
 
-    # Plot the surface and the points
-    ax.plot_surface(x1, x2, beta[0] + beta[1]*x1p + beta[2]*x2p, rstride=4, cstride=4, alpha=0.4,cmap=cm.jet)
-    ax.set_xlabel('Age (Years)')
-    ax.set_ylabel('Weight (Kilograms)')
-    ax.set_zlabel('Height (Meters)')
-    plt.show()
+    X_axis1, X_axis2 = NUM_PY.meshgrid(X_value[:, 0], X_value[:, 1])
+    axes3Dmagic.scatter(X_value[:, 0], X_value[:, 1], y_lable)
 
-    
+    X_axis1_paralel, X_axis2_parallel = NUM_PY.meshgrid(XData_Sample[:, 1], XData_Sample[:, 2])
+
+    axes3Dmagic.plot_surface(X_axis1, X_axis2, betaData[0] + betaData[1] * X_axis1_paralel + betaData[2] * X_axis2_parallel, rstride=4, cstride=4, alpha=0.4, cmap=cm.jet)
+    axes3Dmagic.set_zlabel('Height (Meters)')
+    axes3Dmagic.set_ylabel('Weight (Kilograms)')
+    axes3Dmagic.set_xlabel('Age (Years)')
+
+    PYPlot.show()
+
