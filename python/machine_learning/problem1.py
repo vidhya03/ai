@@ -1,25 +1,25 @@
-import matplotlib.pyplot as PYPlot
+#import matplotlib.pyplot as PYPlot
 import sys
 import numpy as NUM_PY
 
 
-
-def PlottingThePoints(Xaxis, Yaxis, weights):
-
-    for index in xrange(Xaxis.shape[0]):
-        if Yaxis[index] == 1:
-            PYPlot.plot(Xaxis[index, 0], Xaxis[index, 1], 'ro')
-        else:
-            PYPlot.plot(Xaxis[index, 0], Xaxis[index, 1], 'bx')
-    
-    x_axis_min = Xaxis.min(axis=0)
-    x_axis_max = Xaxis.max(axis=0)
-    
-    x_x = [x_axis_min[0] - 1, x_axis_max[0] + 1]
-    y_y = -(weights[2] + weights[0] * x_x) / weights[1]
-    PYPlot.plot(x_x, y_y, 'k')
-    PYPlot.axis([x_axis_min[0] - 1, x_axis_max[0] + 1, x_axis_min[1] - 1, x_axis_max[1] + 1])
-    PYPlot.show()
+# Uncomment for local machine
+# def PlottingThePoints(Xaxis, Yaxis, weights):
+#
+#     for index in xrange(Xaxis.shape[0]):
+#         if Yaxis[index] == 1:
+#             PYPlot.plot(Xaxis[index, 0], Xaxis[index, 1], 'ro')
+#         else:
+#             PYPlot.plot(Xaxis[index, 0], Xaxis[index, 1], 'bx')
+#
+#     x_axis_min = Xaxis.min(axis=0)
+#     x_axis_max = Xaxis.max(axis=0)
+#
+#     x_x = [x_axis_min[0] - 1, x_axis_max[0] + 1]
+#     y_y = -(weights[2] + weights[0] * x_x) / weights[1]
+#     PYPlot.plot(x_x, y_y, 'k')
+#     PYPlot.axis([x_axis_min[0] - 1, x_axis_max[0] + 1, x_axis_min[1] - 1, x_axis_max[1] + 1])
+#     PYPlot.show()
 
 
 def checkAndReturn(x):
@@ -40,8 +40,8 @@ def PPerceptronLearningAlgo(X_Sample, Y_label, output_file_result, graphics=Fals
                 weights[:-1, [0]] = weights[:-1, [0]] + Y_label[index] * NUM_PY.transpose(X_Sample[[index], :])
                 convergence = False
 
-        if graphics:
-            PlottingThePoints(X_Sample, Y_label, weights)
+        # if graphics:
+        #     PlottingThePoints(X_Sample, Y_label, weights)
     
         with open(output_file_result, "a") as output_text_file:
             for weightIdx in weights:

@@ -1,4 +1,4 @@
-import matplotlib.pyplot as PYPlot
+#import matplotlib.pyplot as PYPlot
 import numpy as NUM_PY
 import sys
 from mpl_toolkits.mplot3d import Axes3D
@@ -72,18 +72,18 @@ if __name__ == '__main__':
         readFromText_file.write(','.join(['%.5f' % num for num in betaData]))
         readFromText_file.write('\n')
 
-    figureOnPyplot = PYPlot.figure()
-    axes3Dmagic = Axes3D(figureOnPyplot)
+    #figureOnPyplot = PYPlot.figure()
+    #axes3Dmagic = Axes3D(figureOnPyplot)
 
-    X_axis1, X_axis2 = NUM_PY.meshgrid(X_value[:, 0], X_value[:, 1])
-    axes3Dmagic.scatter(X_value[:, 0], X_value[:, 1], y_lable)
+  #  X_axis1, X_axis2 = NUM_PY.meshgrid(X_value[:, 0], X_value[:, 1])
+    #axes3Dmagic.scatter(X_value[:, 0], X_value[:, 1], y_lable)
 
-    X_axis1_paralel, X_axis2_parallel = NUM_PY.meshgrid(XData_Sample[:, 1], XData_Sample[:, 2])
+   # X_axis1_paralel, X_axis2_parallel = NUM_PY.meshgrid(XData_Sample[:, 1], XData_Sample[:, 2])
 
-    axes3Dmagic.plot_surface(X_axis1, X_axis2, betaData[0] + betaData[1] * X_axis1_paralel + betaData[2] * X_axis2_parallel, rstride=4, cstride=4, alpha=0.4, cmap=cm.jet)
-    axes3Dmagic.set_zlabel('Height (Meters)')
-    axes3Dmagic.set_ylabel('Weight (Kilograms)')
-    axes3Dmagic.set_xlabel('Age (Years)')
+   # axes3Dmagic.plot_surface(X_axis1, X_axis2, betaData[0] + betaData[1] * X_axis1_paralel + betaData[2] * X_axis2_parallel, rstride=4, cstride=4, alpha=0.4, cmap=cm.jet)
+   # axes3Dmagic.set_zlabel('Height (Meters)')
+   # axes3Dmagic.set_ylabel('Weight (Kilograms)')
+   # axes3Dmagic.set_xlabel('Age (Years)')
 
-    PYPlot.show()
+   # PYPlot.show()
 
