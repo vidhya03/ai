@@ -8,20 +8,26 @@ if __name__ == '__main__':
         sys.exit(0)
 
     sudokuBoard = SudokuBoard(sys.argv[1])
-    cspAlgo = SudokuBoardCSPAlgo(sudokuBoard)
-    AC3(cspAlgo)
 
-    # Gets assignment from remaining cells
-    x = BacktrackingSearch(cspAlgo)
 
-    for var in x:
-        cspAlgo.domain[var] = [x[var]]
+    cspAlgoritm = SudokuBoardCSPAlgo(sudokuBoard)
+    AC3_Algo(cspAlgoritm)
 
-    sol = ""
-    for row in "ABCDEFGHI":
-        for col in "123456789":
-            sol += str(cspAlgo.domain[row + col][0])
+    temp = BackCheckS(cspAlgoritm)
 
-    with open("output.txt", "w") as output:
-        output.write(sol)
+    for per in temp:
+        cspAlgoritm.customDomain[per] = [temp[per]]
+
+    solution = ""
+    for row_vice in "ABCDEFGHI":
+        for col_vice in "123456789":
+            solution += str(cspAlgoritm.customDomain[row_vice + col_vice][0])
+
+   # Enable the below line for debug
+   # print 'the input is'
+   # print sudokuBoard
+   #  print 'the output is '
+   #  print SudokuBoard(solution)
+    with open("output.txt", "w") as output_result:
+        output_result.write(solution)
 

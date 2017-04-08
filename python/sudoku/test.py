@@ -21,14 +21,14 @@ N = len(sudokus_start)
 for k in xrange(N):
     sudoku = SudokuBoard(sudokus_start[k])
     csp = SudokuBoardCSPAlgo(sudoku)
-    AC3(csp)
-    x = BacktrackingSearch(csp)
+    AC3_Algo(csp)
+    x = BackCheckS(csp)
     for var in x:
-        csp.domain[var] = [x[var]]
+        csp.customDomain[var] = [x[var]]
     sol = ""
     for row in "ABCDEFGHI":
         for col in "123456789":
-            sol += str(csp.domain[row + col][0])
+            sol += str(csp.customDomain[row + col][0])
 
     print (k + 1, sol == sudokus_finish[k])
     
