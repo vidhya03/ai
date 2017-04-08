@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="278b47a9-8475-429f-b165-73c37c594352" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/python/sudoku/CSP_algo.py" afterPath="$PROJECT_DIR$/python/sudoku/CSP_algo.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/python/sudoku/README.md" afterPath="$PROJECT_DIR$/python/sudoku/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/python/sudoku/SudokuBoard.py" afterPath="$PROJECT_DIR$/python/sudoku/SudokuBoard.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/python/sudoku/driver.py" afterPath="$PROJECT_DIR$/python/sudoku/driver.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/python/sudoku/test.py" afterPath="$PROJECT_DIR$/python/sudoku/test.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -40,7 +36,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/python/sudoku/README.md">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
@@ -92,11 +88,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="driver.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="driver.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/python/sudoku/driver.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="6" column="155" lean-forward="false" selection-start-line="6" selection-start-column="15" selection-end-line="6" selection-end-column="155" />
+            <state relative-caret-position="17">
+              <caret line="1" column="25" lean-forward="false" selection-start-line="1" selection-start-column="25" selection-end-line="1" selection-end-column="25" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -158,8 +154,8 @@
         <option value="$PROJECT_DIR$/python/sudoku/output.txt" />
         <option value="$PROJECT_DIR$/python/sudoku/SudokuBoard.py" />
         <option value="$PROJECT_DIR$/python/sudoku/CSP_algo.py" />
-        <option value="$PROJECT_DIR$/python/sudoku/driver.py" />
         <option value="$PROJECT_DIR$/python/sudoku/README.md" />
+        <option value="$PROJECT_DIR$/python/sudoku/driver.py" />
       </list>
     </option>
   </component>
@@ -473,14 +469,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/python/sudoku/reference_sudokus_finish.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="81" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="81" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/python/machine_learning/input3.csv">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -820,21 +808,29 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/python/sudoku/driver.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="155" lean-forward="false" selection-start-line="6" selection-start-column="15" selection-end-line="6" selection-end-column="155" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/python/sudoku/README.md">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../artificial_intelligence_columbia_edx/Project4/driver.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="56" lean-forward="true" selection-start-line="5" selection-start-column="56" selection-end-line="5" selection-end-column="56" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/python/sudoku/driver.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="25" lean-forward="false" selection-start-line="1" selection-start-column="25" selection-end-line="1" selection-end-column="25" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
